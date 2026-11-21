@@ -1,0 +1,38 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run typecheck
+      - run: pnpm run lint
+      # Groups of at most 300 tests; servers, DNS and CONNECT proxies run on loopback,
+      # no network access is needed. Fails if any test was skipped.
+      - run: pnpm test
+      # The packed tarball in throwaway ESM projects with undici 7 and 8 and
+      # TypeScript 6 and 7: tsc plus guarded dispatcher/connector/fetch at runtime.
+      - run: pnpm run test:consumers
+      - run: pnpm run build
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: jest-report
+          path: .jest-report.json
+          if-no-files-found: ignore
+          retention-days: 7

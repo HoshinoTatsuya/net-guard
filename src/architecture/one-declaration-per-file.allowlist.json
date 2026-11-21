@@ -1,0 +1,42 @@
+{
+  "src/classify-host.ts": {
+    "count": 5,
+    "reason": "TRAILING_DOTS и canonicalIpv6 — шаги разбора внутри classifyHost; HostClassification — её ответ; hostPortMode переводит опцию allowPort в режим, которым classifyHost судит порт"
+  },
+  "src/compile-policy.ts": {
+    "count": 8,
+    "reason": "CompiledPolicy — ответ compilePolicy; встроенная политика BUILT_IN, разбор префикса NAT64 и нормализация зон — шаги той же компиляции и разбираются при загрузке модуля"
+  },
+  "src/constants/host-port-mode.constant.ts": {
+    "count": 2,
+    "reason": "HostPortMode выведен из значений словаря HOST_PORT_MODE (typeof …[keyof …]) и без него не существует; порознь тип и словарь разошлись бы"
+  },
+  "src/guarded-agent.ts": {
+    "count": 11,
+    "reason": "фабрики защищённых http/https агентов и пары агентов делят guardedConnect, splitOptions и классы-наследники Agent; классы не экспортируются, наружу торчат только фабрики"
+  },
+  "src/guarded-lookup.ts": {
+    "count": 8,
+    "reason": "createGuardedLookup, его типы (колбэк, функция, опции) и guardedLookup — экземпляр со встроенной политикой; fail и answer — ответ в форме dns.lookup: контракт одной функции lookup"
+  },
+  "src/is-blocked-ip.ts": {
+    "count": 3,
+    "reason": "isBlockedIp — та же проверка, что isBlockedAddress, по неразобранной политике; BRACKETS — снятие скобок IPv6, общий шаг обеих"
+  },
+  "src/lookup-timeout-ms.ts": {
+    "count": 2,
+    "reason": "MAX_TIMER_MS — потолок таймера Node, которым lookupTimeoutMs ограничивает ожидание DNS из настроек; условие одной функции"
+  },
+  "src/split-host.ts": {
+    "count": 3,
+    "reason": "HostParts — ответ splitHost, validPort — проверка порта при разборе; вне разбора хоста они не используются"
+  },
+  "src/testing/fake-dns-server.ts": {
+    "count": 12,
+    "reason": "подставной DNS-сервер спек: разбор вопроса и сборка ответа по RFC 1035 — одна сущность с константами формата; в сборку пакета не входит"
+  },
+  "src/types/net-guard-policy.type.ts": {
+    "count": 2,
+    "reason": "NonPublicHostOptions расширяет NetGuardPolicy (политика плюс настройки проверки хоста); база и её единственное расширение читаются вместе"
+  }
+}
